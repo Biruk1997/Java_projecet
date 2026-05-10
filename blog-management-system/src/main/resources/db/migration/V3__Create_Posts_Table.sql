@@ -1,0 +1,27 @@
+-- V3: Create Posts Table
+CREATE TABLE posts (
+    post_id CHAR(36) PRIMARY KEY,
+    post_number BIGINT AUTO_INCREMENT UNIQUE NOT NULL,
+    user_id CHAR(36) NOT NULL,
+    title VARCHAR(200) NOT NULL,
+    subtitle VARCHAR(300),
+    content TEXT NOT NULL,
+    content_json TEXT,
+    cover_image TEXT,
+    status VARCHAR(20) DEFAULT 'DRAFT',
+    visibility VARCHAR(20) DEFAULT 'PUBLIC',
+    reading_time INT DEFAULT 1,
+    claps_count INT DEFAULT 0,
+    comments_count INT DEFAULT 0,
+    views_count INT DEFAULT 0,
+    is_featured BOOLEAN DEFAULT FALSE,
+    published_at TIMESTAMP NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    INDEX idx_posts_user (user_id),
+    INDEX idx_posts_status (status),
+    INDEX idx_posts_published (published_at DESC),
+    INDEX idx_posts_created (created_at DESC),
+    FULLTEXT INDEX idx_posts_search (title, content)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
